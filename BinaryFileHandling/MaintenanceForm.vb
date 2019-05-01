@@ -43,4 +43,15 @@ Public Class MaintenanceForm
     Private Sub removeButton_Click(sender As Object, e As EventArgs) Handles removeButton.Click
 
     End Sub
+    'Name: MaintenanceForm_Load
+    'Date: 4/30/2019
+    'Author: Jason Welch
+    'Purpose:
+    Private Sub MaintenanceForm_Load(sender As Object, e As EventArgs) Handles Me.Load
+        Dim readFile As New ProductDb
+        For Each product as Product In readFile.GetProduct
+            productListBox.Items.Add(product.DisplayMessage)
+        Next
+
+    End Sub
 End Class
