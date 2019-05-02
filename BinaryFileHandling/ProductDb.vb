@@ -26,25 +26,19 @@ Public Class ProductDb
     'Purpose: Get Data from Binary File
     Public Function GetProduct() As List(Of Product)
         Dim productList As New List(Of Product)
-        'Dim ms As New MemoryStream(My.Resources.Products)
-        'Dim binaryReader As New BinaryReader(ms)
-        ''Dim pos As Short = 0
-        ''Dim length As Short = CShort(binaryReader.BaseStream.Length)
-        'Dim productList As New List(Of Product)
+        Dim ms As New MemoryStream(My.Resources.Products)
+        Dim binaryReader As New BinaryReader(ms)
 
-        'While binaryReader.BaseStream.CanRead
-        '    Dim currentProduct As New Product
-        '    With binaryReader
-        '        currentProduct.Code = .ReadString
-        '        currentProduct.Name = .ReadString
-        '        currentProduct.Price = .ReadDecimal
-        '    End With
-        '    productList.Add(currentProduct)
-        '    'pos += 1S
-        'End While
-        'ms.Close
-        'binaryReader.Close
-        Dim bts() As Byte = My.Resources.Products
+        Do While binaryReader.PeekChar <> -1
+            Dim currentProduct As New Product
+            currentProduct.Code = binaryReader.ReadString
+            currentProduct.Name = binaryReader.ReadString
+            currentProduct.Price = binaryReader.ReadDecimal
+            productList.Add(currentProduct)
+        Loop
+
+        ms.Close()
+        binaryReader.Close()
 
         Return productList
     End Function
@@ -53,14 +47,15 @@ Public Class ProductDb
     'Date: 4/30/2019
     'Author: Jason Welch
     'Purpose: Write Data from a Binary File
-    Public Sub SaveProduct(newProduct As Product)
-        Dim fileStream As New FileStream(My.Resources.Products.ToString, FileMode.Append)
-        Dim binaryWriter As New BinaryWriter(fileStream)
+    Public Sub SaveProduct(productList As List(Of Product))
+        Dim ms As New MemoryStream(My.Resources.Products)
+        Dim binaryWriter As New BinaryWriter(ms)
 
-        binaryWriter.Write(newProduct.DisplayMessage)
-
+        For Each product As Product In productList
+            binaryWriter.Write(product.DisplayMessage)
+        Next
+        ms.Close()
         binaryWriter.Close()
-        fileStream.Close()
     End Sub
 End Class
 '================================== No Code Follows ===========================================

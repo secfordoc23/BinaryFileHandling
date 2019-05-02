@@ -10,6 +10,8 @@ Option Explicit On
 Imports System.ComponentModel
 
 Public Class MaintenanceForm
+    Private productList As List(Of Product)
+
     '==========================================================================================
     'Name: exitButton_Click
     'Date: 4/30/2019
@@ -49,7 +51,8 @@ Public Class MaintenanceForm
     'Purpose:
     Private Sub MaintenanceForm_Load(sender As Object, e As EventArgs) Handles Me.Load
         Dim readFile As New ProductDb
-        For Each product as Product In readFile.GetProduct
+        productList = readFile.GetProduct
+        For Each product As Product In productList
             productListBox.Items.Add(product.DisplayMessage)
         Next
 
